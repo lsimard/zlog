@@ -2,6 +2,9 @@
 
 TARGETS=noopt 32bit
 
+PACKAGEDIR=package/rpm
+PACKAGE_VERSION=1.2.12
+
 all:
 	cd src && $(MAKE) $@
 
@@ -20,6 +23,12 @@ test:
 TAGS:
 	find . -type f -name "*.[ch]" | xargs etags -
 
+build-rpm:
+	rpmbuild -bb $(PACKAGEDIR)/zlog.spec \
+	    --define "root `pwd`/src"        \
+	    --define "zlog_version $(PACKAGE_VERSION)" \
+	    --define "zlog_major $(ZLOG_MAJOR)" \
+	    --define "zlog_minor $(ZLOG_MINOR)"
 clean:
 	cd src && $(MAKE) $@
 	cd test && $(MAKE) $@
